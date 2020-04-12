@@ -3,6 +3,14 @@
 #include "TankPlayerController.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/World.h"
+#include "Tank.h"
+
+
+ATankPlayerController::ATankPlayerController() {
+	CrossHairXLocation = 0.5;
+	CrossHairYLocation = 0.33333;
+	LineTraceRange = 100000.f;
+}
 
 void ATankPlayerController::BeginPlay() 
 {
@@ -10,10 +18,6 @@ void ATankPlayerController::BeginPlay()
 	UE_LOG(LogTemp, Warning, TEXT("ATankPlayerController::BeginPlay() is called"));
 
 	ATank *ControlledTank = GetControlledTank();
-
-	CrossHairXLocation = 0.5;
-	CrossHairYLocation = 0.33333;
-	LineTraceRange = 100000.f;
 	
 	if (ControlledTank != nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Tank name is : %s"),*ControlledTank->GetName());
@@ -21,7 +25,6 @@ void ATankPlayerController::BeginPlay()
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("Player ControlledTank is null"));
 	}
-
 }
 
 void ATankPlayerController::Tick(float DeltaTime)

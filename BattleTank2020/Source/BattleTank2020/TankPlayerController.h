@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "Tank.h"
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h" // Must be the last header
@@ -10,11 +9,14 @@
 /**
  * 
  */
+class ATank;
+
 UCLASS()
 class BATTLETANK2020_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
+public:
+	ATankPlayerController();
 private:
 	virtual void BeginPlay() override;
 
@@ -32,12 +34,12 @@ private:
 
 	bool GetLookHitLocation(FVector &HitLocation, FVector LookDirections) const;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	float CrossHairXLocation;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	float CrossHairYLocation;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	float LineTraceRange;
 };

@@ -4,8 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "TankAimingComponent.h"
 #include "Tank.generated.h"
+
+// Forward Declarations
+class UTankBarrel;
+class UTankTurret;
+class UTankAimingComponent;
+class AProjectile;
 
 UCLASS()
 class BATTLETANK2020_API ATank : public APawn
@@ -30,6 +35,26 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UFUNCTION(BlueprintCallable)
+	bool Fire();
+
 	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetBarrelReference(UStaticMeshComponent *BarrelToSet);
+	void SetBarrelReference(UTankBarrel *BarrelToSet);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void SetTurretReference(UTankTurret *TurretToSet);
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<AProjectile> ProjectileBlueprint;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float LaunchSpeed;
+
+	UPROPERTY(EditAnywhere, Category = Firing)
+	double TimeOfLastReload;
+
+	// Local Barrel reference
+	UTankBarrel *Barrel;
+
+	float ReloadTime; //seconds
 };
