@@ -51,10 +51,10 @@ public:
 	float LaunchSpeed;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
+	float ReloadTime; //seconds
+
 	double TimeOfLastReload;
 
 	// Local Barrel reference
 	UTankBarrel *Barrel;
-
-	float ReloadTime; //seconds
 };
