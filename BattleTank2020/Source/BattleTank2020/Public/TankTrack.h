@@ -17,10 +17,17 @@ class BATTLETANK2020_API UTankTrack : public UStaticMeshComponent
 public:
 	// Set a throttle between -1 and 1
 	UFUNCTION(BlueprintCallable, Category = Input)
-	void SetThrottle(float Throttle);
+	void SetThrottle(float Throttle, bool IsTurning);
 
+	UTankTrack();
 private:
-	// Max force per track, in Newtons
+
+	/* Tank weight = 40 Tonnes and acceleration = 1G.
+	 * Remember that the acceleraion is in cm/s^2 = 400,000 Newtons
+	 */
 	UPROPERTY(EditDefaultsOnly)
-	float TrackMaxDrivingForce = 400000; // Tank weight = 40 Tonnes and acceleration = 1G.
+	float TrackMaxDrivingForce = 40000000; // Max force per track, in Newtons
+
+	//UPROPERTY(EditDefaultsOnly)
+	//float ForceLocationOffsetScalar = 20.f;
 };
