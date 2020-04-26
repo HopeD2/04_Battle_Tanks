@@ -16,14 +16,20 @@ void UTankMovementComponent::IntendMoveForward(float Throw)
 {
 	if (!LeftTrack && !RightTrack) { return; }
 
-	LeftTrack->SetThrottle(Throw, false);
-	RightTrack->SetThrottle(Throw, false);
+	LeftTrack->SetThrottle(Throw);
+	RightTrack->SetThrottle(Throw);
 }
 
 void UTankMovementComponent::IntendTakeTurn(float Throw)
 {
 	if (!LeftTrack && !RightTrack) { return; }
 	//UE_LOG(LogTemp, Warning, TEXT("%s Throw is : %f"), *GetOwner()->GetName(), Throw);
-	LeftTrack->SetThrottle(-Throw, true);
-	RightTrack->SetThrottle(Throw, true);
+	LeftTrack->SetThrottle(-Throw);
+	RightTrack->SetThrottle(Throw);
+}
+
+void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
+{
+	// No need to call super as default functionality is getting replaced.
+	UE_LOG(LogTemp, Warning, TEXT("Tank Name : %s, Move Velocity : %s"), *GetOwner()->GetName(), *MoveVelocity.ToString());
 }

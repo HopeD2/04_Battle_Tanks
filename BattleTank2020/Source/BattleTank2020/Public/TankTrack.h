@@ -6,20 +6,23 @@
 #include "Components/StaticMeshComponent.h"
 #include "TankTrack.generated.h"
 
-/**
- * 
- */
+class ASprungWheel;
+
 UCLASS(meta = (BlueprintSpawnableComponent))
 class BATTLETANK2020_API UTankTrack : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 
 public:
-	// Set a throttle between -1 and 1
-	UFUNCTION(BlueprintCallable, Category = Input)
-	void SetThrottle(float Throttle, bool IsTurning);
 
 	UTankTrack();
+
+	// Set a throttle between -1 and 1
+	UFUNCTION(BlueprintCallable, Category = Input)
+	void SetThrottle(float Throttle);
+
+	TArray<ASprungWheel*> GetWheels() const;
+
 private:
 
 	/* Tank weight = 40 Tonnes and acceleration = 1G.
@@ -28,6 +31,5 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float TrackMaxDrivingForce = 40000000; // Max force per track, in Newtons
 
-	//UPROPERTY(EditDefaultsOnly)
-	//float ForceLocationOffsetScalar = 20.f;
+	TArray<ASprungWheel*> Wheels;
 };

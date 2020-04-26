@@ -20,6 +20,8 @@ void ATankAIController::Tick(float DeltaTime)
 
 	if (PlayerControlledTank) {
 		// Move towards the player.
+		EPathFollowingRequestResult::Type result = MoveToActor(PlayerControlledTank, AccRadius);
+		UE_LOG(LogTemp, Warning, TEXT("EPathFollowingRequestResult : %d"), result);
 
 		// Aim towards the player.
 		AIControlledTank->AimAt(PlayerControlledTank->GetActorLocation());
