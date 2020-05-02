@@ -9,6 +9,14 @@
 class UTankBarrel;
 class UTankTurret;
 
+UENUM()
+enum class EFiringStatus : uint8
+{
+	Reloading,
+	Aiming,
+	Locked
+};
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK2020_API UTankAimingComponent : public UActorComponent
 {
@@ -27,10 +35,13 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void AimAt(FVector WorldSpaceAim, float LaunchSpeed);
-
 	void SetBarrelReference(UTankBarrel *BarrelToSet);
 
 	void SetTurretReference(UTankTurret * TurretToSet);
+
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = Setup)
+	EFiringStatus FiringStatus = EFiringStatus::Reloading;
 
 private:
 	void MoveBarrel(FVector AimDirection);

@@ -29,7 +29,7 @@ private:
 	 * Remember that the acceleraion is in cm/s^2 = 400,000 Newtons
 	 */
 	UPROPERTY(EditDefaultsOnly)
-	float TrackMaxDrivingForce = 40000000; // Max force per track, in Newtons
+	float TrackMaxDrivingForce = 40000000; // Max force in Newtons divided between wheels
 
 	TArray<ASprungWheel*> Wheels;
 };

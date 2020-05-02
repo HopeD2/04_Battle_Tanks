@@ -91,9 +91,3 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 		Turret->RotateTurret(RotationDifference.GetNormalized().Yaw);
 	}
 }
-
-//void UTankAimingComponent::MoveTurret(FVector AimDirection)
-//{
-//
-//}
-

@@ -17,12 +17,15 @@ class BATTLETANK2020_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 public:
 	ATankPlayerController();
+
+protected:
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	ATank* GetControlledTank() const;
+
 private:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
-
-	ATank* GetControlledTank() const;
 
 	// Move the tank barrel to fire a shot where the crosshair intersects
 	// with the world.

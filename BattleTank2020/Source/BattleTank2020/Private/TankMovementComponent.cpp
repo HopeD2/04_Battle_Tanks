@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright GhantaGaming Ltd.
 
 #include "TankMovementComponent.h"
 #include "TankTrack.h"
@@ -31,5 +31,13 @@ void UTankMovementComponent::IntendTakeTurn(float Throw)
 void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
 {
 	// No need to call super as default functionality is getting replaced.
-	UE_LOG(LogTemp, Warning, TEXT("Tank Name : %s, Move Velocity : %s"), *GetOwner()->GetName(), *MoveVelocity.ToString());
+	FVector AIForwardIntention = MoveVelocity.GetSafeNormal();
+	FVector TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+
+	float Throw = FVector::DotProduct(AIForwardIntention, TankForward);
+	IntendMoveForward(Throw);
+
+	FVector Turn = FVector::CrossProduct(AIForwardIntention, TankForward);
+	IntendTakeTurn(Turn.Z);
+	//UE_LOG(LogTemp, Warning, TEXT("Tank Name : %s, Move Velocity : %s"), *GetOwner()->GetName(), *MoveVelocityNormalized.ToString());
 }
