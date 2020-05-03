@@ -8,6 +8,7 @@
 
 class UTankBarrel;
 class UTankTurret;
+class AProjectile;
 
 UENUM()
 enum class EFiringStatus : uint8
@@ -34,10 +35,13 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void AimAt(FVector WorldSpaceAim, float LaunchSpeed);
-	void SetBarrelReference(UTankBarrel *BarrelToSet);
+	void AimAt(FVector WorldSpaceAim);
 
-	void SetTurretReference(UTankTurret * TurretToSet);
+	UFUNCTION(BlueprintCallable, Category = Setup)
+	void Initialize(UTankBarrel *BarrelToSet, UTankTurret * TurretToSet);
+
+	UFUNCTION(BlueprintCallable)
+	bool Fire();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = Setup)
@@ -46,7 +50,23 @@ protected:
 private:
 	void MoveBarrel(FVector AimDirection);
 
+	bool IsBarrelMoving();
+
+	// TODO : Make this 4000
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float LaunchSpeed = 10000.f; // Launch Speed 100,000 = 1000 m/s, as resolution is in cm
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	TSubclassOf<AProjectile> ProjectileBlueprint;
+
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float ReloadTime = 3; //seconds
+
+	double TimeOfLastReload = 0;
+
 	UTankBarrel *Barrel = nullptr;
 
 	UTankTurret *Turret = nullptr;
+
+	FVector CurrentAimDirection = FVector(0);
 };

@@ -9,7 +9,7 @@
 /**
  * 
  */
-class ATank;
+class UTankAimingComponent;
 
 UCLASS()
 class BATTLETANK2020_API ATankPlayerController : public APlayerController
@@ -19,9 +19,9 @@ public:
 	ATankPlayerController();
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = Setup)
-	ATank* GetControlledTank() const;
 
+	UFUNCTION(BlueprintImplementableEvent, Category = Setup)
+	void FoundAimingComponent(UTankAimingComponent* ACompRef);
 private:
 	virtual void BeginPlay() override;
 

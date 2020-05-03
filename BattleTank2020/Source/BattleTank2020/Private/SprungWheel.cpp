@@ -38,10 +38,10 @@ void ASprungWheel::BeginPlay()
 void ASprungWheel::SetPhysicsConstraints()
 {
 	AActor *ParentActor = GetAttachParentActor();
-	if (!ParentActor) { return; }
+	if (!ensure(ParentActor)) { return; }
 
 	UPrimitiveComponent *BodyRoot = Cast<UPrimitiveComponent>(GetAttachParentActor()->GetRootComponent());
-	if (!BodyRoot) { return; }
+	if (!ensure(BodyRoot)) { return; }
 
 	PhysicsConstraint->SetConstrainedComponents(BodyRoot, NAME_None, Axle, NAME_None);
 	AxleWheelConstraint->SetConstrainedComponents(Axle, NAME_None, Wheel, NAME_None);

@@ -3,28 +3,24 @@
 #include "TankPlayerController.h"
 #include "DrawDebugHelpers.h"
 #include "Engine/World.h"
-#include "Tank.h"
+#include "TankAimingComponent.h"
 
 
 ATankPlayerController::ATankPlayerController() {
 	CrossHairXLocation = 0.5;
 	CrossHairYLocation = 0.33333;
-	LineTraceRange = 100000.f;
+	LineTraceRange = 10000.f; // TODO: reduce this to 10k
 }
 
 void ATankPlayerController::BeginPlay() 
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("ATankPlayerController::BeginPlay() is called"));
+	UTankAimingComponent *AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(AimingComponent)) {
+		return;
+	}
 
-	ATank *ControlledTank = GetControlledTank();
-	
-	if (ControlledTank != nullptr) {
-		UE_LOG(LogTemp, Warning, TEXT("Tank name is : %s"),*ControlledTank->GetName());
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("Player ControlledTank is null"));
-	}
+	FoundAimingComponent(AimingComponent);
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -33,14 +29,9 @@ void ATankPlayerController::Tick(float DeltaTime)
 	AimTowardsCrosshair();
 }
 
-ATank* ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!GetControlledTank()) { return; }
+	if (!ensure(GetPawn())) { return; }
 
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation)) {
@@ -65,7 +56,10 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector & HitLocation) const
 		//RayCast at crosshair location
 		if (GetLookHitLocation(HitLocation,LookDirection)) {
 			//UE_LOG(LogTemp, Warning, TEXT("Hitting Location : %s"), *HitLocation.ToString());
-			GetControlledTank()->AimAt(HitLocation);
+			UTankAimingComponent *AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+			if (ensure(AimingComponent)) {
+				AimingComponent->AimAt(HitLocation);
+			}
 		}
 	}
 	return true;
