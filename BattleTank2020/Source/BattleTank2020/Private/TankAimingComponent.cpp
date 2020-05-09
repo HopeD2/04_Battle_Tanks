@@ -32,8 +32,11 @@ void UTankAimingComponent::BeginPlay()
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
-	if ((FPlatformTime::Seconds() - TimeOfLastReload) < ReloadTime) 
+
+	if (AmmoCount <= 0) {
+		FiringStatus = EFiringStatus::OutOfAmmo;
+	}
+	else if ((FPlatformTime::Seconds() - TimeOfLastReload) < ReloadTime) 
 	{
 		FiringStatus = EFiringStatus::Reloading;
 	}
@@ -110,17 +113,32 @@ bool UTankAimingComponent::Fire()
 {
 	if (!ensure(Barrel)) { return false; }
 
-	if (FiringStatus != EFiringStatus::Reloading) {
+	if (!ensure(ProjectileBlueprint)) { return false; }
+
+	if (FiringStatus != EFiringStatus::Reloading && FiringStatus != EFiringStatus::OutOfAmmo) {
 		AProjectile *Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")),
 			Barrel->GetSocketRotation(FName("Projectile")));
 
+		if (!ensure(Projectile)) { return false; }
+
 		Projectile->LaunchProjectile(LaunchSpeed);
+		AmmoCount--;
 		TimeOfLastReload = FPlatformTime::Seconds();
 		return true;
 	}
 	else {
 		return false;
 	}
+}
+
+EFiringStatus UTankAimingComponent::GetFiringState() const
+{
+	return FiringStatus;
+}
+
+int UTankAimingComponent::GetAmmoCount() const
+{
+	return AmmoCount;
 }

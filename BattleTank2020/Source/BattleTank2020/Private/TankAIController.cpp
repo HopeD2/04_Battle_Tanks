@@ -17,18 +17,19 @@ void ATankAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	ATank *PlayerControlledTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	ATank *AIControlledTank = Cast<ATank>(GetPawn());
+	AActor *AIControlledActor = GetPawn();
 
-	if (!ensure(PlayerControlledTank && AIControlledTank)) { return; }
+	if (!ensure(PlayerControlledTank && AIControlledActor)) { return; }
 	// Move towards the player.
 	MoveToActor(PlayerControlledTank, AccRadius);
 
 	// Aim towards the player.
-	UTankAimingComponent *AimingComponent = AIControlledTank->FindComponentByClass<UTankAimingComponent>();
+	UTankAimingComponent *AimingComponent = AIControlledActor->FindComponentByClass<UTankAimingComponent>();
 	if (ensure(AimingComponent)) {
 		AimingComponent->AimAt(PlayerControlledTank->GetActorLocation());
 	}
-			
-	// Fire if Ready
-	AimingComponent->Fire();
+
+	if (AimingComponent->GetFiringState() == EFiringStatus::Locked) {
+		AimingComponent->Fire();
+	}
 }

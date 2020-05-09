@@ -2,9 +2,6 @@
 BattleTank.VC.VC.opendb
 .vs/
 
-#Starter Content
-Content/StarterContent/*
-
 # Compiled Object files
 *.slo
 *.lo

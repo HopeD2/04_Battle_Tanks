@@ -15,7 +15,8 @@ enum class EFiringStatus : uint8
 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	OutOfAmmo
 };
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -43,6 +44,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool Fire();
 
+	EFiringStatus GetFiringState() const;
+
+	UFUNCTION(BlueprintCallable)
+	int GetAmmoCount() const;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = Setup)
 	EFiringStatus FiringStatus = EFiringStatus::Reloading;
@@ -69,4 +75,6 @@ private:
 	UTankTurret *Turret = nullptr;
 
 	FVector CurrentAimDirection = FVector(0);
+
+	unsigned int AmmoCount = 10;
 };

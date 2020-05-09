@@ -17,7 +17,8 @@ class BATTLETANK2020_API ATankAIController : public AAIController
 	GENERATED_BODY()
 	
 private:
-	float AccRadius = 3000; // How close the AI tank should be from player.
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+	float AccRadius = 8000; // How close the AI tank should be from player.
 
 	virtual void BeginPlay() override;
 

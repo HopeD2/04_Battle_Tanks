@@ -15,6 +15,7 @@ ATankPlayerController::ATankPlayerController() {
 void ATankPlayerController::BeginPlay() 
 {
 	Super::BeginPlay();
+	if (!ensure(GetPawn())) { return; }
 	UTankAimingComponent *AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if (!ensure(AimingComponent)) {
 		return;
@@ -35,9 +36,12 @@ void ATankPlayerController::AimTowardsCrosshair()
 
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation)) {
-		//UE_LOG(LogTemp, Warning, TEXT("Hit location : %s"), *HitLocation.ToString());
 		//If it hits landscape
 		//Tell controlled tank to aim at this point
+		UTankAimingComponent *AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+		if (ensure(AimingComponent)) {
+			AimingComponent->AimAt(HitLocation);
+		}
 	}
 	
 }
@@ -55,14 +59,10 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector & HitLocation) const
 	{
 		//RayCast at crosshair location
 		if (GetLookHitLocation(HitLocation,LookDirection)) {
-			//UE_LOG(LogTemp, Warning, TEXT("Hitting Location : %s"), *HitLocation.ToString());
-			UTankAimingComponent *AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
-			if (ensure(AimingComponent)) {
-				AimingComponent->AimAt(HitLocation);
-			}
+			return true;
 		}
 	}
-	return true;
+	return false;
 }
 
 bool ATankPlayerController::GetLookDirection(FVector2D &ScreenLocation, FVector &LookDirection) const
